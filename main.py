@@ -9,7 +9,8 @@ from acme import wrappers, specs, environment_loop
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--logging_frequency", default=60.)
-parser.add_argument("--env", default="Hopper")
+parser.add_argument("--env", default="Hopper") # Hopper
+parser.add_argument("--agent", default="D4PG") # D4PG, DDPG, DDPO 
 parser.add_argument('--save_model', action='store_true')
 parser.add_argument('--load_model', action='store_true')
 parser.add_argument('--save_plot', action='store_true')
@@ -19,6 +20,8 @@ args = parser.parse_args()
 
 if args.env == "Hopper":
   env = Hopper(render=False)
+else:
+  raise ValueError("{} Environment Not Found".format(args.env))
 
 env = wrappers.GymWrapper(env)
 env = wrappers.SinglePrecisionWrapper(env)
@@ -37,7 +40,8 @@ agent = create_agent(specs.make_environment_spec(env),
                       env.action_spec(),
                       args.lr,
                       learner_logger,
-                      args.save_model)
+                      args.save_model,
+                      args.agent)
 
 if args.load_model:
   restore_ckpt_from_local(agent)
