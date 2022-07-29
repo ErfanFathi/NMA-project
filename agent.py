@@ -27,7 +27,7 @@ def create_agent(env_spec, action_spec, lr, learner_logger, checkpoint, agent_na
                 critic_optimizer=critic_optimizer,
                 logger=learner_logger,
                 checkpoint=checkpoint)
-  if agent_name == "DMPO":
+  elif agent_name == "DMPO":
     policy_network, critic_network = make_networks_dmpo(action_spec)
     agent = DistributionalMPO(environment_spec=env_spec,
                               policy_network=policy_network,
@@ -37,7 +37,7 @@ def create_agent(env_spec, action_spec, lr, learner_logger, checkpoint, agent_na
                               critic_optimizer=critic_optimizer,
                               logger=learner_logger,
                               checkpoint=False)
-  if agent_name == "DDPG":
+  elif agent_name == "DDPG":
     policy_network, critic_network = make_networks_ddpg(action_spec)
     agent = DDPG(environment_spec=env_spec,
              policy_network=policy_network,
