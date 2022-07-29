@@ -136,3 +136,4 @@ lib64*
 share/
 utils/
 bin/
+pyvenv.cfg
