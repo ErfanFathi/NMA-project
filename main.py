@@ -1,6 +1,6 @@
 from model import save_ckpt_to_local, restore_ckpt_from_local
 from plot import save_video, reward_plot
-from environment import Hopper
+from environment import Hopper, Ant
 from agent import create_agent
 import argparse
 
@@ -20,6 +20,8 @@ args = parser.parse_args()
 
 if args.env == "Hopper":
   env = Hopper(render=False)
+elif args.env == "Ant":
+  env = Ant(render=False)
 else:
   raise ValueError("{} Environment Not Found".format(args.env))
 

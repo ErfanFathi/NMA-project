@@ -1,3 +1,4 @@
+import math
 import numpy as np
 from pybullet_envs.gym_locomotion_envs import HopperBulletEnv
 from pybullet_envs.gym_locomotion_envs import Walker2DBulletEnv
@@ -62,12 +63,47 @@ class Hopper(HopperBulletEnv):
     electricity_cost += self.stall_torque_cost * float(np.square(a).mean())
 
     joints_at_limit_cost = float(self.joints_at_limit_cost * self.robot.joints_at_limit)
-
+    
+    r_dis=5/np.sqrt(2*np.pi)*np.exp(-self.robot.walk_target_dist**2/2)
+    p=self.robot_body
+    x=np.array(self.robot.body_rpy)
+    v=np.exp(x)
+    t=np.exp(x[1])/np.sum(np.exp(x))
     self.rewards = [
                     self._alive, progress, electricity_cost,
-                    joints_at_limit_cost, feet_collision_cost
+                    joints_at_limit_cost, feet_collision_cost,
+                    self.robot_body.speed().mean(),
+                    self.robot.parts['foot'].pose().xyz()[2]
                     ]
     self.HUD(state, a, done)
     self.reward += sum(self.rewards)
 
     return state, sum(self.rewards), bool(done), {}
+
+
+class Ant(AntBulletEnv):
+
+  def __init__(self, render=False, episode_steps=1000):
+    """Modifies `__init__` in `HopperBulletEnv` parent class."""
+    self.episode_steps = episode_steps
+    super().__init__(render=render)
+
+  def reset(self):
+    """Modifies `reset` in `WalkerBaseBulletEnv` base class."""
+    self.step_counter = 0
+    return super().reset()
+
+  def _isDone(self):
+    """Modifies `_isDone` in `WalkerBaseBulletEnv` base class."""
+    return (self.step_counter == self.episode_steps
+            or super()._isDone())
+
+  def step(self, a):
+    """Fully overrides `step` in `WalkerBaseBulletEnv` base class."""
+
+    self.step_counter += 1
+
+    state,reward,done,_ = super().step(a)
+    speed_r=-2/(1+math.exp(self.robot_body.speed()[0]))+1
+    custom_rewards=[speed_r]
+    return state,reward+sum(custom_rewards),done,{}
