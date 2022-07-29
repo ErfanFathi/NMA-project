@@ -127,3 +127,12 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# ignore for this project
+acme_ckpt/
+jaxlib*
+include/
+lib64*
+share/
+utils/
+bin/
