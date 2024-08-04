@@ -34,7 +34,7 @@ ipython==8.4.0
 jax==0.2.22
 jaxlib @ file:///home/mrl/Robolympics/jaxlib-0.1.69%2Bcuda111-cp38-none-manylinux2010_x86_64.whl
 jedi==0.18.1
-keras==2.8.0
+keras==2.13.1
 Keras-Preprocessing==1.1.2
 kiwisolver==1.4.4
 libclang==14.0.1
