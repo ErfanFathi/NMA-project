@@ -49,7 +49,7 @@ packaging==21.3
 parso==0.8.3
 pexpect==4.8.0
 pickleshare==0.7.5
-Pillow==9.2.0
+Pillow==12.3.0
 pkg_resources==0.0.0
 portpicker==1.5.2
 prompt-toolkit==3.0.30
